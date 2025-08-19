@@ -3,7 +3,16 @@
 *.pyo
 *.pyd
 __pycache__/
+
+# Training outputs and runs
 runs/
+weights/
+evaluation_results/
+
+# Dataset files (large downloads)
+data/visdrone/
+data/downloads/
+
 # Virtual environment
 venv/
 env/
@@ -13,10 +22,15 @@ env/
 
 # PyCharm or other IDEs configuration files
 .idea/
-.vscode/
 
 # MacOS system files
 .DS_Store
 
 # Windows system files
 Thumbs.db
+
+# Model checkpoints and logs
+*.pt
+*.pth
+wandb/
+tensorboard/

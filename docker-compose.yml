@@ -1,0 +1,29 @@
+services:
+  uav-detr-training:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uav-detr-halo
+    # GPU support enabled
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=0
+      - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      # Mount local data directory with write permissions
+      - ./data:/workspace/data
+      # Mount output directories for persistence
+      - ./runs:/workspace/runs
+      - ./evaluation_results:/workspace/evaluation_results
+      # Mount weights directory
+      - ./weights:/workspace/weights
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

@@ -1,0 +1,29 @@
+# VisDrone 4-class vehicle detection dataset configuration for UAV-DETR
+
+# Dataset paths (mounted in Docker container)
+path: /workspace/data/visdrone/organized
+train: train/images
+val: val/images
+test: # Optional test set
+
+# Number of classes
+nc: 4
+
+# Class names (must match COCO annotation categories)
+names:
+  0: car
+  1: van
+  2: truck
+  3: bus
+
+# Dataset info
+description: "VisDrone 2019 dataset - Vehicle classes only for aerial detection"
+version: "1.0"
+license: "VisDrone Dataset License"
+
+# Additional metadata
+source_dataset: "VisDrone-DET2019"
+task: "aerial_vehicle_detection"
+classes_selected: ["car", "van", "truck", "bus"]
+total_images_train: 6471
+total_images_val: 548
