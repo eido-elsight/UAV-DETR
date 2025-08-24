@@ -17,10 +17,10 @@ if __name__ == '__main__':
     # 获取当前脚本所在的目录
     current_dir = Path(__file__).parent
     # 构建相对路径
-    yaml_path = '/mnt/RTdetr/RTDETR-main/dataset/dataset_visdrone/data.yaml'
+    yaml_path = 'datasets/data.yaml'  # Put your dataset config here
     check_path(yaml_path)
     # model = RTDETR('ultralytics/cfg/models/uavdetr-r50.yaml')
-    model = RTDETR('/mnt/RTdetr/UAV_DETR/ultralytics/cfg/models/uavdetr-r50.yaml')
+    model = RTDETR('ultralytics/cfg/models/uavdetr-r50.yaml')
     model.train(data=str(yaml_path),
                 cache=False,
                 imgsz=640,

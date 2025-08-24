@@ -8,6 +8,9 @@ runs/
 venv/
 env/
 
+# Dataset files
+data/
+
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 

@@ -6,8 +6,8 @@ from ultralytics import RTDETR
 # 最终论文的参数量和计算量统一以这个脚本运行出来的为准
 
 if __name__ == '__main__':
-    model = RTDETR('/mnt/RTdetr/UAV_DETR/runs/train/exp6/weights/best.pt')
-    model.val(data='/mnt/RTdetr/RTDETR-main/dataset/dataset_visdrone/data.yaml',
+    model = RTDETR('runs/train/exp/weights/best.pt')  # Your trained weights
+    model.val(data='datasets/data.yaml',  # Your dataset config
               split='val', # split可以选择train、val、test 根据自己的数据集情况来选择.
               imgsz=640,
               batch=4,

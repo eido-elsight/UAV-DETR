@@ -1,0 +1,18 @@
+# VisDrone Vehicle Detection Dataset Configuration
+# 4-class vehicle detection: car, van, truck, bus
+# Compatible with UAV-DETR training pipeline
+
+path: /workspace/data/visdrone/yolo
+train: images/train
+val: images/val
+# test: images/test   # uncomment if you want to evaluate on test-dev
+
+# Class mapping (0-based indexing)
+names:
+  0: car
+  1: van
+  2: truck
+  3: bus
+
+# Dataset metadata
+nc: 4  # number of classes
