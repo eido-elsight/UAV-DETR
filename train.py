@@ -24,9 +24,13 @@ if __name__ == '__main__':
     model.train(data=str(yaml_path),
                 cache=False,
                 imgsz=640,
-                epochs=400,
-                batch=4,
-                workers=8,
+                # Original parameters
+                # epochs=400,
+                # batch=4,
+                # workers=8,
+                epochs=1,
+                batch=1,
+                workers=2,
                 device='0',
                 # resume='', # last.pt path
                 project='runs/train',
