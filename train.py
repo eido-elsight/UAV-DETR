@@ -24,8 +24,8 @@ if __name__ == '__main__':
     model.train(data=str(yaml_path),
                 cache=False,
                 imgsz=640,
-                # Incremental training - start from trained model
-                epochs=1,  # Train for 1 epoch starting from the trained model
+                # Extended training - 11 additional epochs to reach 15 total
+                epochs=11,  # Train for 11 epochs to reach 15 total (4 completed + 11 = 15)
                 batch=1,
                 workers=2,
                 device='0',
