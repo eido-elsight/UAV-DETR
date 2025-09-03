@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  # Main UAV-DETR training service
+  uav-detr-training:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uav-detr-training
+    
+    # Volume mounts
+    volumes:
+      - ./data:/workspace/data
+      - ./datasets:/workspace/datasets  
+      - ./runs:/workspace/runs
+      - ./weights:/workspace/weights
+      - ./logs:/workspace/logs
+      - .:/workspace/code  # Mount source code for development
+      
+    # Environment variables
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - TORCH_HOME=/workspace/.torch
+      - ULTRALYTICS_CONFIG_DIR=/workspace/.ultralytics
+      - WANDB_PROJECT=uav-detr-training
+      - PYTHONPATH=/workspace
+      
+    working_dir: /workspace
+    
+    # GPU support - requires nvidia-docker runtime
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    
+    # Resource limits (adjust based on your system)
+    mem_limit: 16g
+    memswap_limit: 24g
+    
+    # Interactive mode
+    stdin_open: true
+    tty: true
+    
+    # Default command
+    command: >
+      bash -c "echo 'UAV-DETR Training Environment Ready!' && 
+      echo 'Available commands:' && 
+      echo '  python train_local.py    - Start training' && 
+      echo '  python val_local.py      - Run validation' && 
+      echo '  python predict.py        - Run inference' && 
+      echo '' && 
+      echo 'Models available:' && 
+      echo '  - uavdetr-r18.yaml  (20.5M params, 64.3 GFLOPs)' && 
+      echo '  - uavdetr-r50.yaml  (44.4M params, 161.4 GFLOPs)' && 
+      echo '  - uavdetr-ev2.yaml  (12.1M params, 33.3 GFLOPs)' && 
+      echo '' && 
+      echo 'To start training: docker exec -it uav-detr-training python train_local.py' &&
+      tail -f /dev/null"
+
+  # Data preparation service
+  data-preparation:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uav-detr-data-prep
+    
+    volumes:
+      - ./data:/workspace/data
+      - ./datasets:/workspace/datasets
+      - .:/workspace/code
+      
+    working_dir: /workspace
+    
+    # For data download/preparation tasks
+    command: >
+      bash -c "echo 'Data preparation container ready' && 
+      echo 'Use this container for:' && 
+      echo '  - Downloading VisDrone dataset' && 
+      echo '  - Converting annotations' && 
+      echo '  - Data preprocessing' && 
+      tail -f /dev/null"
+
+  # TensorBoard service (optional)
+  tensorboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uav-detr-tensorboard
+    
+    volumes:
+      - ./runs:/workspace/runs
+      - ./logs:/workspace/logs
+      
+    ports:
+      - "6006:6006"
+      
+    working_dir: /workspace
+    
+    command: bash -c "sleep 10 && tensorboard --logdir=runs --host=0.0.0.0 --port=6006"
+    
+    depends_on:
+      - uav-detr-training
+
+# Optional: Define networks for inter-container communication
+networks:
+  default:
+    driver: bridge
